@@ -1,0 +1,8 @@
+*~
+*.swp
+*.pyc
+*.bak
+
+*.html
+
+setting.py
