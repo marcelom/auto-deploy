@@ -36,5 +36,6 @@ class S3_bucket:
 if __name__ == '__main__':
     from setting import AWS_KEY_ID, AWS_KEY, S3_BUCKET
     my_bucket = S3_bucket(AWS_KEY_ID, AWS_KEY, S3_BUCKET)
-    # my_bucket.upload_files(['test1.html', 'test2.html'])
-    print my_bucket.get_value('test.file')
+    #my_bucket.upload_files(['test1.html', 'test2.html'])
+    #print my_bucket.get_value('test.file')
+    print my_bucket.get_value('test1.html')
