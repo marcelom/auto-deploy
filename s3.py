@@ -5,7 +5,7 @@ from boto.s3.key import Key
 from boto.exception import S3ResponseError
 
 
-class S3_bucket:
+class S3Bucket:
     def __init__(self, key_id, key_secret, bucket_name):
         conn = S3Connection(key_id, key_secret)
         self.bucket = conn.get_bucket(bucket_name)
@@ -35,7 +35,7 @@ class S3_bucket:
 
 if __name__ == '__main__':
     from setting import AWS_KEY_ID, AWS_KEY, S3_BUCKET
-    my_bucket = S3_bucket(AWS_KEY_ID, AWS_KEY, S3_BUCKET)
+    my_bucket = S3Bucket(AWS_KEY_ID, AWS_KEY, S3_BUCKET)
     #my_bucket.upload_files(['test1.html', 'test2.html'])
     #print my_bucket.get_value('test.file')
     print my_bucket.get_value('test1.html')

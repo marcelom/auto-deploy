@@ -1,12 +1,41 @@
 #!/usr/bin/env python
 
 import subprocess
+import os
+
+GIT_LOCAL_BASE = 'repos'
+if not os.path.exists(GIT_LOCAL_BASE):
+    os.mkdir(GIT_LOCAL_BASE)
 
 
-def check_output(args):
+def command_output(args):
     # learnt from http://goo.gl/CgTnQ
     output = subprocess.Popen(args,
             stdout=subprocess.PIPE).communicate()[0]
     return output
 
-print check_output(['ls', '-l'])
+
+class GitRepo:
+    def __init__(self, remote_url, local_folder):
+        self.remote_url = remote_url
+        self.local_path = GIT_LOCAL_BASE + '/' + local_folder
+        if not os.path.exists(self.local_path):
+            self.clone()
+        else:
+            self.pull()
+
+    def clone(self):
+        subprocess.call(['git', 'clone', self.remote_url, self.local_path])
+
+    def pull(self):
+        print self.local_path
+        subprocess.call(['git', '--git-dir', self.local_path + '/.git',
+            '--work-tree', self.local_path, 'pull'])
+
+    def changed_files(self, hash1, hash2='HEAD'):
+        pass
+
+
+if __name__ == '__main__':
+    from setting import GIT_REMOTE_URL, GIT_LOCAL_FOLDER
+    my_repo = GitRepo(GIT_REMOTE_URL, GIT_LOCAL_FOLDER)
