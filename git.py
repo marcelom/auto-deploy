@@ -28,14 +28,25 @@ class GitRepo:
         subprocess.call(['git', 'clone', self.remote_url, self.local_path])
 
     def pull(self):
-        print self.local_path
-        subprocess.call(['git', '--git-dir', self.local_path + '/.git',
-            '--work-tree', self.local_path, 'pull'])
+        # check http://goo.gl/TQGyY
+        # is git still buggy?
+        # cannot pull out of working directory
+        subprocess.call(['git',
+            '--git-dir', self.local_path + '/.git',
+            'fetch'])
+        subprocess.call(['git',
+            '--git-dir', self.local_path + '/.git',
+            '--work-tree', self.local_path,
+            'merge', '--ff-only', 'origin/master'])
 
     def changed_files(self, hash1, hash2='HEAD'):
-        pass
+        name_list = command_output(['git',
+            '--git-dir', self.local_path + '/.git',
+            'diff', '--name-only', hash1, hash2]).strip().split()
+        return [self.local_path + '/' + f for f in name_list]
 
 
 if __name__ == '__main__':
     from setting import GIT_REMOTE_URL, GIT_LOCAL_FOLDER
     my_repo = GitRepo(GIT_REMOTE_URL, GIT_LOCAL_FOLDER)
+    print my_repo.changed_files('HEAD~2')
