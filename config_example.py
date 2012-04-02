@@ -14,7 +14,7 @@ settings = (
         'repo_name': 'bbb',
         'repo_url': 'git@github.com:bbb/bbb.git',
 
-        'deploy_type': 'scp',
+        'deploy_type': 'ssh',
 
         'ssh_address': 'bbb.domainname.com',
         'ssh_username': 'username',

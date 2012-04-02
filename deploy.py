@@ -17,12 +17,12 @@ def deploy(repo_name):
                     local_folder=s['repo_name'])
 
             if s['deploy_type'] == 's3':
-                storage = S3Bucket(
+                server = S3Bucket(
                         s['aws_key_id'],
                         s['aws_key'],
                         s['s3_bucket'])
 
-            prev_hash = storage.get_value(VERSION_FILE)
+            prev_hash = server.get_value(VERSION_FILE)
             if '' == prev_hash:
                 files_to_upload = git_repo.all_files()
                 files_to_delete = []
@@ -32,10 +32,10 @@ def deploy(repo_name):
 
             #print files_to_upload
             #print files_to_delete
-            storage.upload_files(files_to_upload, all_public=True)
-            storage.delete_files(files_to_delete)
+            server.upload_files(files_to_upload, all_public=True)
+            server.delete_files(files_to_delete)
 
-            storage.set_value(VERSION_FILE, git_repo.head_hash())
+            server.set_value(VERSION_FILE, git_repo.head_hash())
 
             return
 

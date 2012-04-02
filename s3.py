@@ -4,8 +4,10 @@ from boto.s3.connection import S3Connection
 from boto.s3.key import Key
 from boto.exception import S3ResponseError
 
+from storage import Storage
 
-class S3Bucket:
+
+class S3Bucket(Storage):
     def __init__(self, key_id, key_secret, bucket_name):
         conn = S3Connection(key_id, key_secret)
         self.bucket = conn.get_bucket(bucket_name)
@@ -46,7 +48,8 @@ if __name__ == '__main__':
     my_bucket = S3Bucket(aws_key_id, aws_key, s3_bucket)
 
     my_bucket.upload_files({
-        'test1.html': 'test1.html', 'test2.html': 'test2.html'})
+        'test1.html': 'test1.html', 'test2.html': 'test2.html'
+    })
     print my_bucket.get_value('test1.html')
     my_bucket.delete_files(['test1.html', 'test2.html'])
     print my_bucket.get_value('test1.html')
