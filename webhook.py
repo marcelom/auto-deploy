@@ -3,6 +3,8 @@
 import tornado.web
 from tornado.escape import json_decode
 
+import deploy
+
 GitHub_POST_IPs = (
     '207.97.227.253',
     '50.57.128.197',
@@ -20,9 +22,8 @@ class GithubHookHandler(tornado.web.RequestHandler):
 
         payload = json_decode(self.get_argument('payload'))
         repo_name = payload['repository']['name']
-        repo_hash = payload['head_commit']['id']
 
-        print repo_name, repo_hash
+        deploy.deploy(repo_name)
 
 
 application = tornado.web.Application([
@@ -30,7 +31,7 @@ application = tornado.web.Application([
 ])
 
 if __name__ == "__main__":
-    application.listen(80)
+    application.listen(8080)
 
     import tornado.ioloop
     ioloop = tornado.ioloop.IOLoop.instance()

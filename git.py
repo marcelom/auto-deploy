@@ -56,11 +56,29 @@ class GitRepo:
         ).strip().split())
 
         set_updated = set_changed - set_deleted
+        dict_updated = dict()
+        for f in set_updated:
+            dict_updated[f] = self.local_path + '/' + f
 
-        return (
-            [self.local_path + '/' + f for f in set_updated],
-            [self.local_path + '/' + f for f in set_deleted],
-        )
+        return (dict_updated, [self.local_path + '/' + f for f in set_deleted])
+
+    def head_hash(self):
+        return command_output(['git',
+            '--git-dir', self.local_path + '/.git',
+            'rev-parse', 'HEAD']
+        ).strip()
+
+    def all_files(self):
+        list_files = command_output(['git',
+            '--git-dir', self.local_path + '/.git',
+            'ls-tree', '-r', '--name-only', 'HEAD']
+        ).strip().split()
+
+        dict_files = dict()
+        for f in list_files:
+            dict_files[f] = self.local_path + '/' + f
+
+        return dict_files
 
 
 if __name__ == '__main__':
@@ -70,3 +88,6 @@ if __name__ == '__main__':
 
     my_repo = GitRepo(remote_url, local_folder)
     print my_repo.changed_files('HEAD~2')
+
+    print my_repo.head_hash()
+    print my_repo.all_files()

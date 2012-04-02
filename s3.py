@@ -10,10 +10,11 @@ class S3Bucket:
         conn = S3Connection(key_id, key_secret)
         self.bucket = conn.get_bucket(bucket_name)
 
-    def upload_files(self, list_files, all_public=False):
-        for file_name in list_files:
+    def upload_files(self, dict_files, all_public=False):
+        # dict of files, {name: local_location}
+        for file_name in dict_files.keys():
             obj = Key(self.bucket, file_name)
-            with open(file_name) as fp:
+            with open(dict_files[file_name]) as fp:
                 obj.set_contents_from_file(fp)
             if all_public:
                 obj.make_public()
@@ -44,7 +45,8 @@ if __name__ == '__main__':
 
     my_bucket = S3Bucket(aws_key_id, aws_key, s3_bucket)
 
-    my_bucket.upload_files(['test1.html', 'test2.html'])
+    my_bucket.upload_files({
+        'test1.html': 'test1.html', 'test2.html': 'test2.html'})
     print my_bucket.get_value('test1.html')
     my_bucket.delete_files(['test1.html', 'test2.html'])
     print my_bucket.get_value('test1.html')
