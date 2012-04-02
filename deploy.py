@@ -30,6 +30,8 @@ def deploy(repo_name):
                 files_to_upload, files_to_delete = \
                         git_repo.changed_files(prev_hash)
 
+            #print files_to_upload
+            #print files_to_delete
             storage.upload_files(files_to_upload, all_public=True)
             storage.delete_files(files_to_delete)
 

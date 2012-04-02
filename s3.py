@@ -19,8 +19,8 @@ class S3Bucket:
             if all_public:
                 obj.make_public()
 
-    def delete_files(self, list_files):
-        self.bucket.delete_keys(list_files)
+    def delete_files(self, set_files):
+        self.bucket.delete_keys(list(set_files))  # cannot use set here?
 
     def get_value(self, key):
         obj = Key(self.bucket, key)

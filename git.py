@@ -28,20 +28,14 @@ class GitRepo:
         subprocess.call(['git', 'clone', self.remote_url, self.local_path])
 
     def pull(self):
-        # check http://goo.gl/TQGyY
-        # is git still buggy?
-        # cannot pull out of working directory
-        subprocess.call(['git',
-            '--git-dir', self.local_path + '/.git',
-            'fetch'])
-        subprocess.call(['git',
-            '--git-dir', self.local_path + '/.git',
-            '--work-tree', self.local_path,
-            'merge', '--ff-only', 'origin/master'])
+        saved_cwd = os.getcwd()
+        os.chdir(self.local_path)
+        subprocess.call(['git', 'pull'])
+        os.chdir(saved_cwd)
 
     def changed_files(self, hash1, hash2='HEAD'):
         """
-        return lists of updated files and deleted files seperately
+        return dict/list of updated and deleted files seperately
         """
         set_deleted = set(command_output(['git',
             '--git-dir', self.local_path + '/.git',
@@ -60,7 +54,7 @@ class GitRepo:
         for f in set_updated:
             dict_updated[f] = self.local_path + '/' + f
 
-        return (dict_updated, [self.local_path + '/' + f for f in set_deleted])
+        return dict_updated, set_deleted
 
     def head_hash(self):
         return command_output(['git',
