@@ -37,9 +37,12 @@ class S3Bucket:
 
 
 if __name__ == '__main__':
-    from config import AWS_KEY_ID, AWS_KEY, S3_BUCKET
+    from config import settings
+    aws_key_id = settings[0]['aws_key_id']
+    aws_key = settings[0]['aws_key']
+    s3_bucket = settings[0]['s3_bucket']
 
-    my_bucket = S3Bucket(AWS_KEY_ID, AWS_KEY, S3_BUCKET)
+    my_bucket = S3Bucket(aws_key_id, aws_key, s3_bucket)
 
     my_bucket.upload_files(['test1.html', 'test2.html'])
     print my_bucket.get_value('test1.html')

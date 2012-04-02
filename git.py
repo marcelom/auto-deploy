@@ -64,6 +64,9 @@ class GitRepo:
 
 
 if __name__ == '__main__':
-    from config import GIT_REMOTE_URL, GIT_LOCAL_FOLDER
-    my_repo = GitRepo(GIT_REMOTE_URL, GIT_LOCAL_FOLDER)
+    from config import settings
+    remote_url = settings[0]['repo_url']
+    local_folder = settings[0]['repo_name']
+
+    my_repo = GitRepo(remote_url, local_folder)
     print my_repo.changed_files('HEAD~2')
