@@ -2,6 +2,8 @@
 *.swp
 *.pyc
 *.bak
+*.out
+*.log
 
 *.html
 
