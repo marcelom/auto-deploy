@@ -10,13 +10,16 @@ class S3Bucket:
         conn = S3Connection(key_id, key_secret)
         self.bucket = conn.get_bucket(bucket_name)
 
-    def upload_files(self, list_files, all_public=True):
+    def upload_files(self, list_files, all_public=False):
         for file_name in list_files:
             obj = Key(self.bucket, file_name)
             with open(file_name) as fp:
                 obj.set_contents_from_file(fp)
             if all_public:
                 obj.make_public()
+
+    def delete_files(self, list_files):
+        self.bucket.delete_keys(list_files)
 
     def get_value(self, key):
         obj = Key(self.bucket, key)
@@ -26,7 +29,7 @@ class S3Bucket:
             if e.status == 404:  # not found
                 return ''
 
-    def set_value(self, key, value, make_public=True):
+    def set_value(self, key, value, make_public=False):
         obj = Key(self.bucket, key)
         obj.set_contents_from_string(value)
         if make_public:
@@ -34,8 +37,11 @@ class S3Bucket:
 
 
 if __name__ == '__main__':
-    from setting import AWS_KEY_ID, AWS_KEY, S3_BUCKET
+    from config import AWS_KEY_ID, AWS_KEY, S3_BUCKET
+
     my_bucket = S3Bucket(AWS_KEY_ID, AWS_KEY, S3_BUCKET)
-    #my_bucket.upload_files(['test1.html', 'test2.html'])
-    #print my_bucket.get_value('test.file')
+
+    my_bucket.upload_files(['test1.html', 'test2.html'])
+    print my_bucket.get_value('test1.html')
+    my_bucket.delete_files(['test1.html', 'test2.html'])
     print my_bucket.get_value('test1.html')

@@ -40,13 +40,30 @@ class GitRepo:
             'merge', '--ff-only', 'origin/master'])
 
     def changed_files(self, hash1, hash2='HEAD'):
-        name_list = command_output(['git',
+        """
+        return lists of updated files and deleted files seperately
+        """
+        set_deleted = set(command_output(['git',
             '--git-dir', self.local_path + '/.git',
-            'diff', '--name-only', hash1, hash2]).strip().split()
-        return [self.local_path + '/' + f for f in name_list]
+            'diff', '--name-only', '--diff-filter=D',
+            hash1, hash2]
+        ).strip().split())
+
+        set_changed = set(command_output(['git',
+            '--git-dir', self.local_path + '/.git',
+            'diff', '--name-only',
+            hash1, hash2]
+        ).strip().split())
+
+        set_updated = set_changed - set_deleted
+
+        return (
+            [self.local_path + '/' + f for f in set_updated],
+            [self.local_path + '/' + f for f in set_deleted],
+        )
 
 
 if __name__ == '__main__':
-    from setting import GIT_REMOTE_URL, GIT_LOCAL_FOLDER
+    from config import GIT_REMOTE_URL, GIT_LOCAL_FOLDER
     my_repo = GitRepo(GIT_REMOTE_URL, GIT_LOCAL_FOLDER)
     print my_repo.changed_files('HEAD~2')

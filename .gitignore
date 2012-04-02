@@ -5,5 +5,7 @@
 
 *.html
 
+config.py
 setting.py
+settings.py
 repos
