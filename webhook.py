@@ -31,7 +31,7 @@ application = tornado.web.Application([
 ])
 
 if __name__ == "__main__":
-    application.listen(8080)
+    application.listen(80)
 
     import tornado.ioloop
     ioloop = tornado.ioloop.IOLoop.instance()
