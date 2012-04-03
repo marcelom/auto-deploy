@@ -28,6 +28,8 @@ class GitRepo:
         subprocess.call(['git', 'clone', self.remote_url, self.local_path])
 
     def pull(self):
+        # git pull/merge may have a bug
+        # they cannot function properly outside working dir
         saved_cwd = os.getcwd()
         os.chdir(self.local_path)
         subprocess.call(['git', 'pull'])
@@ -76,12 +78,12 @@ class GitRepo:
 
 
 if __name__ == '__main__':
-    from config import settings
-    remote_url = settings[0]['repo_url']
-    local_folder = settings[0]['repo_name']
+    from config import config
+    remote_url = config[0]['repo_url']
+    local_folder = config[0]['repo_name']
 
     my_repo = GitRepo(remote_url, local_folder)
-    print my_repo.changed_files('HEAD~2')
+    #print my_repo.changed_files('HEAD~2')
 
     print my_repo.head_hash()
-    print my_repo.all_files()
+    # print my_repo.all_files()

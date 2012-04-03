@@ -40,10 +40,10 @@ class S3Bucket(Storage):
 
 
 if __name__ == '__main__':
-    from config import settings
-    aws_key_id = settings[0]['aws_key_id']
-    aws_key = settings[0]['aws_key']
-    s3_bucket = settings[0]['s3_bucket']
+    from config import config
+    aws_key_id = config[0]['aws_key_id']
+    aws_key = config[0]['aws_key']
+    s3_bucket = config[0]['s3_bucket']
 
     my_bucket = S3Bucket(aws_key_id, aws_key, s3_bucket)
 
