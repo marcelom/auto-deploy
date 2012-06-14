@@ -11,7 +11,7 @@ A simple project to automatically upload your files to server (only AWS S3 is su
 ### License
 Released under MIT license.
 
-    Copyright (C) 2012 Bo Zhu http://fun.bozhu.me
+    Copyright (C) 2012 Bo Zhu http://zhuzhu.org
 
     Permission is hereby granted, free of charge, to any person obtaining a
     copy of this software and associated documentation files (the "Software"),
